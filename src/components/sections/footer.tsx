@@ -29,7 +29,9 @@ export function FooterSection() {
           <a href="https://tailwindcss.com" className="text-primary hover:underline">Tailwind CSS</a>
         </p>
 
-        <p className="text-xs text-center">&copy; 2025 Muhammad Fiaz. All rights reserved.</p>
+       <p className="text-xs text-center">
+  &copy; {new Date().getFullYear()} Vincent Iwuno. All rights reserved.
+</p>
       </div>
     </footer>
   );
