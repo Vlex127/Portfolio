@@ -85,15 +85,17 @@ export const siteConfig: SiteConfig = {
   links: {
     website: 'https://vincentiwuno.kesug.com',
     github: 'https://github.com/vlex127',
-    linkedin: 'https://www.linkedin.com/feed/',
-    tips: 'https://pay.vincentiwuno.kesug.com',
+    linkedin: 'https://www.linkedin.com/in/vincent-iwuno-309167315/',
+    tips: 'https://pay-vincentiwuno.kesug.com',
     email: 'mailto:contact@vincentayokunle.com',
+    instagram: 'https://www.instagram.com/vincentayokunle/',
   },
   social: [
     { label: 'GitHub', url: 'https://github.com/Vlex127', icon: 'github' },
-    { label: 'LinkedIn', url: 'https://www.linkedin.com/feed/', icon: 'linkedin' },
+    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/vincent-iwuno-309167315/', icon: 'linkedin' },
     { label: 'Website', url: 'https://vincentiwuno.kesug.com', icon: 'globe' },
-    { label: 'Tip', url: 'https://pay.vincentiwuno.kesug.com', icon: 'coffee' },
+    { label: 'Tip', url: 'https://pay-vincentiwuno.kesug.com', icon: 'coffee' },
+    {label: 'Instagram', url: 'https://www.instagram.com/vincentayokunle/', icon: 'instagram' }
   ],
   navigation: [
     { label: 'Home', href: '/' },
