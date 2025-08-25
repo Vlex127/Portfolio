@@ -36,6 +36,7 @@ export interface SiteConfig {
     linkedin: string;
     tips: string;
     email: string;
+    instagram: string;
   };
   social: SocialLink[];
   navigation: NavItem[];
@@ -44,7 +45,7 @@ export interface SiteConfig {
   description: string;
   keywords: string[];
   canonical?: string;
-  image?: string; // default og image
+  image?: string; // default profile image  
   imageAlt?: string;
   locale?: string;
   type?: string;
