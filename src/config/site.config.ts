@@ -76,8 +76,8 @@ export const siteConfig: SiteConfig = {
     'Machine Learning',
     'AI'
   ],
-  ogImage: '/og.png',
-  twitterHandle: '@muhammadfiaz_',
+  ogImage: '/profile.jpg',
+  twitterHandle: '@VINCENTAYOKUNL1',
 
   theme: {
     default: 'dark',
