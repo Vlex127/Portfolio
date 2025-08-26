@@ -65,7 +65,7 @@ export const siteConfig: SiteConfig = {
     'I am a Full Stack developer who loves creating new things. I spend my spare time building free apps & tools, and I am currently diving into Machine Learning & AI to expand my problem‑solving toolkit. Always open to collaboration & new challenges.',
     author_img: 'https://vincentiwuno.kesug.com/profile.jpg',
     keywords: [
-    'Iwuno Vincent',
+    'Vincent Iwuno',
     'Full Stack Developer',
     'Portfolio',
     'Next.js',
@@ -109,10 +109,10 @@ export const siteConfig: SiteConfig = {
 
   
   seo: {
-    title: 'Iwuno Vincent - Full Stack Developer',
+    title: 'Vincent Iwuno - Full Stack Developer',
     description: 'Full Stack developer creating useful & delightful web experiences. Exploring ML & AI.',
     keywords: [
-      'Iwuno Vincent',
+      'Vincent Iwuno',
       'Full Stack Developer',
       'Portfolio',
       'Next.js',
@@ -125,7 +125,7 @@ export const siteConfig: SiteConfig = {
     ],
     canonical: 'https://vincentiwuno.kesug.com',
     image: '/profile.jpg',
-    imageAlt: "Iwuno Vinceent - Full Stack Developer",
+    imageAlt: "Vinceent Iwuno - Full Stack Developer",
     locale: 'en-US',
     type: 'website',
     twitterCard: 'summary_large_image',
