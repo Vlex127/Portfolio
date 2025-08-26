@@ -67,13 +67,16 @@ export async function GET() {
 
     // Fetch from Hashnode
     const hashnodeHost = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
-    if (hashnodeHost) {
+    const hashnodeToken = process.env.HASHNODE_API_TOKEN;
+    if (!hashnodeHost || !hashnodeToken) {
+      console.error('Missing Hashnode env variables');
+    } else {
       try {
         const hashnodeResponse = await fetch('https://gql.hashnode.com/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': process.env.HASHNODE_API_TOKEN || '',
+            'Authorization': hashnodeToken,
           },
           body: JSON.stringify({
             query: HASHNODE_QUERY,
@@ -83,11 +86,12 @@ export async function GET() {
             },
           }),
         });
-
-        if (hashnodeResponse.ok) {
+        if (!hashnodeResponse.ok) {
+          const errorText = await hashnodeResponse.text();
+          console.error('Hashnode fetch failed:', errorText);
+        } else {
           const hashnodeData = await hashnodeResponse.json();
           const hashnodePosts = hashnodeData?.data?.publication?.posts?.edges || [];
-          
           hashnodePosts.forEach((edge: { node: HashnodePost }) => {
             const post = edge.node;
             posts.push({
@@ -109,35 +113,40 @@ export async function GET() {
       }
     }
 
-    // Fetch from Medium RSS
+    // Fetch from Medium RSS (direct, no cache)
     const mediumUsername = process.env.NEXT_PUBLIC_MEDIUM_USERNAME;
     if (mediumUsername) {
       try {
-        // Use RSS2JSON service to convert RSS to JSON
-        const mediumResponse = await fetch(
-          `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/${mediumUsername}`
-        );
-
-        if (mediumResponse.ok) {
-          const mediumData = await mediumResponse.json();
-          const mediumPosts = mediumData?.items || [];
-          
-          mediumPosts.slice(0, 10).forEach((post: MediumItem, index: number) => {
-            // Extract brief from content
-            const brief = post.description
-              ?.replace(/<[^>]*>/g, '') // Remove HTML tags
-              ?.substring(0, 200) + '...';
-            
+        const mediumResponse = await fetch(`https://medium.com/feed/${mediumUsername}`);
+        if (!mediumResponse.ok) {
+          const errorText = await mediumResponse.text();
+          console.error('Medium fetch failed:', errorText);
+        } else {
+          const xml = await mediumResponse.text();
+          const parser = new (require('xmldom').DOMParser)();
+          const doc = parser.parseFromString(xml, 'text/xml');
+          const items = Array.from(doc.getElementsByTagName('item'));
+          items.slice(0, 10).forEach((item: any, index: number) => {
+            const getText = (tag: string) => {
+              const el = item.getElementsByTagName(tag)[0];
+              return el && el.textContent ? el.textContent : '';
+            };
+            const title = getText('title');
+            const link = getText('link');
+            const pubDate = getText('pubDate');
+            const description = getText('description');
+            const categories = Array.from(item.getElementsByTagName('category')).map((cat: any) => ({ name: cat.textContent }));
+            const brief = description.replace(/<[^>]*>/g, '').substring(0, 200) + '...';
             posts.push({
-              id: `medium-${index}-${post.link}`,
-              title: post.title,
+              id: `medium-${index}-${link}`,
+              title,
               brief: brief || 'No description available',
-              slug: post.link.split('/').pop() || '',
-              url: post.link,
-              publishedAt: post.pubDate,
-              readTimeInMinutes: Math.ceil((post.description?.length || 0) / 200), // Rough estimate
-              coverImage: extractImageFromContent(post.description),
-              tags: post.categories?.map((cat: string) => ({ name: cat })) || [],
+              slug: link.split('/').pop() || '',
+              url: link,
+              publishedAt: pubDate,
+              readTimeInMinutes: Math.ceil((description.length || 0) / 200),
+              coverImage: extractImageFromContent(description),
+              tags: categories,
               source: 'medium',
             });
           });
