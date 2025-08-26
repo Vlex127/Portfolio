@@ -132,6 +132,14 @@ export async function GET() {
             const description = getText('description');
             const categories = Array.from(item.getElementsByTagName('category')).map((cat: Element) => ({ name: cat.textContent || '' }));
             const brief = description.replace(/<[^>]*>/g, '').substring(0, 200) + '...';
+            // Try to extract image from description, fallback to <media:content> if not found
+            let coverImage = extractImageFromContent(description);
+            if (!coverImage) {
+              const mediaContent = item.getElementsByTagName('media:content')[0];
+              if (mediaContent && mediaContent.getAttribute('url')) {
+                coverImage = mediaContent.getAttribute('url') || undefined;
+              }
+            }
             posts.push({
               id: `medium-${index}-${link}`,
               title,
@@ -140,7 +148,7 @@ export async function GET() {
               url: link,
               publishedAt: pubDate,
               readTimeInMinutes: Math.ceil((description.length || 0) / 200),
-              coverImage: extractImageFromContent(description),
+              coverImage,
               tags: categories,
               source: 'medium',
             });
