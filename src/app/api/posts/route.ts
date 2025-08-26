@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { DOMParser } from 'xmldom';
 
 interface HashnodePost {
   id: string;
@@ -14,13 +15,7 @@ interface HashnodePost {
   tags: { name: string }[];
 }
 
-interface MediumItem {
-  title: string;
-  link: string;
-  pubDate: string;
-  description: string;
-  categories: string[];
-}
+
 
 interface Post {
   id: string;
@@ -123,10 +118,10 @@ export async function GET() {
           console.error('Medium fetch failed:', errorText);
         } else {
           const xml = await mediumResponse.text();
-          const parser = new (require('xmldom').DOMParser)();
+          const parser = new DOMParser();
           const doc = parser.parseFromString(xml, 'text/xml');
-          const items = Array.from(doc.getElementsByTagName('item'));
-          items.slice(0, 10).forEach((item: any, index: number) => {
+          const items = Array.from(doc.getElementsByTagName('item')) as Element[];
+          items.slice(0, 10).forEach((item: Element, index: number) => {
             const getText = (tag: string) => {
               const el = item.getElementsByTagName(tag)[0];
               return el && el.textContent ? el.textContent : '';
@@ -135,7 +130,7 @@ export async function GET() {
             const link = getText('link');
             const pubDate = getText('pubDate');
             const description = getText('description');
-            const categories = Array.from(item.getElementsByTagName('category')).map((cat: any) => ({ name: cat.textContent }));
+            const categories = Array.from(item.getElementsByTagName('category')).map((cat: Element) => ({ name: cat.textContent || '' }));
             const brief = description.replace(/<[^>]*>/g, '').substring(0, 200) + '...';
             posts.push({
               id: `medium-${index}-${link}`,
