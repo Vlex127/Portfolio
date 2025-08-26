@@ -123,7 +123,7 @@ export async function GET() {
           {
             cache: 'force-cache',
             next: {
-              revalidate: 3600, // Cache for 1 hour
+              revalidate: 60, // Cache for 1 minute
             },
           }
         );
