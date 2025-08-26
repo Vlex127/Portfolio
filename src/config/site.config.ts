@@ -88,7 +88,7 @@ export const siteConfig: SiteConfig = {
     github: 'https://github.com/vlex127',
     linkedin: 'https://www.linkedin.com/in/vincent-iwuno-309167315/',
     tips: 'https://pay-vincentiwuno.kesug.com',
-    email: 'mailto:contact@vincentayokunle.com',
+    email: 'mailto:vincentayokunle@gmail.com',
     instagram: 'https://www.instagram.com/vincentayokunle/',
   },
   social: [
