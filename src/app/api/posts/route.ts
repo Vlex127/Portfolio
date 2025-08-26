@@ -82,10 +82,6 @@ export async function GET() {
               first: 10,
             },
           }),
-          cache: 'force-cache',
-          next: {
-            revalidate: 3600, // Cache for 1 hour
-          },
         });
 
         if (hashnodeResponse.ok) {
@@ -119,13 +115,7 @@ export async function GET() {
       try {
         // Use RSS2JSON service to convert RSS to JSON
         const mediumResponse = await fetch(
-          `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/${mediumUsername}`,
-          {
-            cache: 'force-cache',
-            next: {
-              revalidate: 60, // Cache for 1 minute
-            },
-          }
+          `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/${mediumUsername}`
         );
 
         if (mediumResponse.ok) {
@@ -160,11 +150,7 @@ export async function GET() {
     // Sort by publish date (newest first)
     posts.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
-    return NextResponse.json(posts.slice(0, 20), {
-      headers: {
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=7200',
-      },
-    });
+    return NextResponse.json(posts.slice(0, 20));
   } catch (error) {
     console.error('Error fetching posts:', error);
     
