@@ -3,7 +3,7 @@
   <p>Personal portfolio built with Next.js & React</p>
 
   [![MIT License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-  [![Latest Release](https://img.shields.io/github/v/release/vincentiwuno/portfolio)](https://github.com/vincentiwuno/portfolio/releases)
+  [![Latest Release](https://img.shields.io/github/v/release/vlex127/portfolio)](https://github.com/vincentiwuno/portfolio/releases)
   [![Build Status](https://github.com/vincentiwuno/portfolio/actions/workflows/prettier.yml/badge.svg)](https://github.com/vincentiwuno/portfolio/actions)
   [![Stars](https://img.shields.io/github/stars/vincentiwuno/portfolio?style=social)](https://github.com/vincentiwuno/portfolio/stargazers)
 </div>
