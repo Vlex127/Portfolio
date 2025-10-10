@@ -188,8 +188,8 @@ export default function TermsOfService() {
                 Governing Law & Dispute Resolution
               </h4>
               <p className="mb-2 text-sm">
-                These Terms are governed by the laws of Nigeria. For users
-                outside Nigeria, you agree that Nigerian law will govern
+                These Terms are governed by the laws of United states. For users
+                outside United states, you agree that United statesn law will govern
                 disputes arising out of these Terms unless local mandatory
                 consumer protection laws provide otherwise. Parties agree to
                 attempt to resolve disputes through good-faith negotiation

@@ -150,7 +150,7 @@ export default function RefundPolicy() {
               <p className="mb-2 text-sm">
                 If a dispute arises, please contact us first to attempt an
                 amicable resolution. This policy is governed by the laws of{" "}
-                <strong>Nigeria</strong>, but local consumer protection laws may
+                <strong>United states</strong>, but local consumer protection laws may
                 also apply if you reside elsewhere.
               </p>
 
