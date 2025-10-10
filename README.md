@@ -4,7 +4,7 @@
 
   [![MIT License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
   [![Latest Release](https://img.shields.io/github/v/release/vlex127/portfolio)](https://github.com/vincentiwuno/portfolio/releases)
-  [![Build Status](https://github.com/vincentiwuno/portfolio/actions/workflows/prettier.yml/badge.svg)](https://github.com/vincentiwuno/portfolio/actions)
+  [![Build Status](https://github.com/vincentiwuno/portfolio/actions/workflows/prettier.yml/badge.svg)](https://github.com/vlex127/portfolio/actions)
   [![Stars](https://img.shields.io/github/stars/vincentiwuno/portfolio?style=social)](https://github.com/vincentiwuno/portfolio/stargazers)
 </div>
 
