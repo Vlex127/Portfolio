@@ -25,6 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Head><meta name="google-site-verification" content="4xG6jNcHmsq9IPjmSJxa1JHdrjVNZIV67pWoIQFoEF8" /></Head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground`}>
         <ThemeProvider>
           <Navbar />
