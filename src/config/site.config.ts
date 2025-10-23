@@ -171,5 +171,13 @@ export function buildMetadata(overrides: Partial<Metadata> = {}): Metadata {
 
   return { ...base, ...overrides };
 }
+export function buildMetadata(): Metadata {
+  return {
+    // ... other metadata (title, description, etc.)
+    verification: {
+      google: '4xG6jNcHmsq9IPjmSJxa1JHdrjVNZIV67pWoIQFoEF8', // Add the key here
+    },
+  };
+}
 
 export type { Metadata };
