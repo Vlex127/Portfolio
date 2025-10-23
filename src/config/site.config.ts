@@ -89,14 +89,14 @@ export const siteConfig: SiteConfig = {
     linkedin: 'https://www.linkedin.com/in/vincent-iwuno-309167315/',
     tips: 'https://pay-vincentiwuno.kesug.com',
     email: 'mailto:vincentayokunle@gmail.com',
-    instagram: 'https://www.instagram.com/vincentayokunle/',
+    instagram: 'https://www.instagram.com/vincentiwuno/',
   },
   social: [
     { label: 'GitHub', url: 'https://github.com/Vlex127', icon: 'github' },
     { label: 'LinkedIn', url: 'https://www.linkedin.com/in/vincent-iwuno-309167315/', icon: 'linkedin' },
     { label: 'Website', url: 'https://vincentiwuno.kesug.com', icon: 'globe' },
     { label: 'Tip', url: 'https://pay-vincentiwuno.kesug.com', icon: 'coffee' },
-    {label: 'Instagram', url: 'https://www.instagram.com/vincentayokunle/', icon: 'instagram' }
+    {label: 'Instagram', url: 'https://www.instagram.com/vincentiwuno/', icon: 'instagram' }
   ],
   navigation: [
     { label: 'Home', href: '/' },
@@ -145,6 +145,13 @@ export function buildMetadata(overrides: Partial<Metadata> = {}): Metadata {
     authors: [{ name: siteConfig.author, url: siteConfig.links.website }],
     metadataBase: new URL(`https://${domain}`),
     alternates: { canonical: seo.canonical ?? `https://${domain}` },
+
+    // 👇 ADD THE VERIFICATION PROPERTY HERE
+    verification: {
+      google: '4xG6jNcHmsq9IPjmSJxa1JHdrjVNZIV67pWoIQFoEF8',
+    },
+    // 👆 END OF ADDED PROPERTY
+
     openGraph: {
       title: seo.title,
       description: seo.description,
@@ -171,13 +178,7 @@ export function buildMetadata(overrides: Partial<Metadata> = {}): Metadata {
 
   return { ...base, ...overrides };
 }
-export function buildMetadata(): Metadata {
-  return {
-    // ... other metadata (title, description, etc.)
-    verification: {
-      google: '4xG6jNcHmsq9IPjmSJxa1JHdrjVNZIV67pWoIQFoEF8', // Add the key here
-    },
-  };
-}
+
+// Remove the second, duplicate function definition entirely.
 
 export type { Metadata };
