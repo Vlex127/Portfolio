@@ -31,7 +31,7 @@ Welcome to **Portfolio V4** — a sleek showcase of my work, skills, and contact
 Clone and run locally:
 
 ```bash
-git clone https://github.com/vincentiwuno/portfolio.git
+git clone https://github.com/Vlex127/portfolio.git
 cd portfolio
 npm install
 npm run dev
