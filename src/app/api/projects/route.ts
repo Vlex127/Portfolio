@@ -33,7 +33,7 @@ export async function GET() {
     }
 
     const response = await fetch(
-      `https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=20&type=owner`,
+      `https://api.github.com/user/repos?sort=updated&per_page=50&affiliation=owner`,
       {
         headers: {
           'Authorization': `token ${githubToken}`,
@@ -51,9 +51,11 @@ export async function GET() {
     }
 
     const repos: GitHubRepo[] = await response.json();
-    // Only filter out private repos, keep forks
-    const publicRepos = repos
-      .filter((repo) => !repo.private)
+    const filteredRepos = repos
+      .filter((repo) => {
+        // Show public repos OR private repos that have a homepage (live preview)
+        return !repo.private || (repo.private && repo.homepage);
+      })
       .sort((a, b) => {
         // Sort by combination of stars and recent updates
         const aScore = a.stargazers_count + (new Date(a.updated_at).getTime() / 1000000);
@@ -61,7 +63,7 @@ export async function GET() {
         return bScore - aScore;
       });
 
-    return NextResponse.json(publicRepos, {
+    return NextResponse.json(filteredRepos, {
       headers: {
         'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=7200',
       },
@@ -127,5 +129,22 @@ const MOCK_PROJECTS: GitHubRepo[] = [
     pushed_at: new Date().toISOString(),
     fork: false,
     private: false,
+  },
+  {
+    id: 4,
+    name: 'Stealth-Project',
+    full_name: 'Vlex127/Stealth-Project',
+    description: 'A confidential enterprise application developed for secure data management. Features high-level encryption and real-time monitoring.',
+    html_url: 'https://github.com/Vlex127/Stealth-Project',
+    homepage: 'https://stealth.example.com',
+    stargazers_count: 0,
+    forks_count: 0,
+    language: 'Rust',
+    topics: ['enterprise', 'security', 'confidential'],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    pushed_at: new Date().toISOString(),
+    fork: false,
+    private: true,
   }
 ];

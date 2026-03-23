@@ -51,7 +51,8 @@ interface GitHubRepo {
   topics: string[];
   created_at: string;
   updated_at: string;
-  pushed_at: string;
+  fork: boolean;
+  private: boolean;
 }
 
 function ProjectThumbnail({ project, index }: { project: GitHubRepo; index: number }) {
@@ -337,7 +338,12 @@ export function ProjectsGrid() {
                         </div>
                       </div>
                       {project.homepage && (
-                        <div className="absolute top-2 right-2 z-10">
+                        <div className="absolute top-2 right-2 z-10 flex gap-2">
+                          {project.private && (
+                            <Badge className="bg-amber-500/90 text-white border-0 backdrop-blur-md flex items-center gap-1">
+                              Private
+                            </Badge>
+                          )}
                           <Badge className="bg-emerald-500/90 text-white border-0 backdrop-blur-md flex items-center gap-1">
                             <Globe className="h-3 w-3" />
                             Live
@@ -458,17 +464,19 @@ export function ProjectsGrid() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3 pt-4">
-                  <Button asChild size="sm" variant="outline" className="flex-1">
-                    <Link
-                      href={project.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2"
-                    >
-                      <Github className="h-3 w-3" />
-                      Code
-                    </Link>
-                  </Button>
+                  {!project.private && (
+                    <Button asChild size="sm" variant="outline" className="flex-1">
+                      <Link
+                        href={project.html_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2"
+                      >
+                        <Github className="h-3 w-3" />
+                        Code
+                      </Link>
+                    </Button>
+                  )}
                   {project.homepage && (
                     <Button asChild size="sm" className="flex-1">
                       <Link
