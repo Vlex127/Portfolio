@@ -8,6 +8,7 @@ import { Announcement, AnnouncementTitle, AnnouncementTag } from '@/components/u
 import { ArrowRight, Zap, ChevronDown } from 'lucide-react';
 import { ArrowUpRightIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
+import { Meteors } from '@/components/ui/meteors';
 
 export function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,7 +51,7 @@ export function HeroSection() {
         style={{
           background: useTransform(
             [mouseXSpring, mouseYSpring],
-            ([x, y]) => `radial-gradient(800px circle at ${x}px ${y}px, var(--color-primary), transparent 80%)`
+            ([x, y]) => `radial-gradient(400px circle at ${x}px ${y}px, var(--color-primary), transparent 80%)`
           ),
         }}
       />
@@ -61,6 +62,11 @@ export function HeroSection() {
         style={{ y: yParallax, opacity: opacityParallax }}
         className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_110%)] pointer-events-none select-none"
       />
+
+      {/* Background Meteor Effect */}
+      <div className="absolute inset-x-0 top-0 h-full w-full pointer-events-none select-none z-20 overflow-hidden">
+        <Meteors number={40} />
+      </div>
 
       <motion.div
         style={{ scale: scaleParallax, opacity: opacityParallax }}
