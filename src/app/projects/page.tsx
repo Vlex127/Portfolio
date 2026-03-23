@@ -23,11 +23,11 @@ export default function ProjectsPage() {
 
 function ProjectsLoading() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-      {Array.from({ length: 6 }).map((_, i) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-12">
+      {Array.from({ length: 8 }).map((_, i) => (
         <div
           key={i}
-          className="h-64 bg-muted/30 rounded-lg animate-pulse"
+          className="h-[420px] bg-muted/30 rounded-xl animate-pulse"
         />
       ))}
     </div>

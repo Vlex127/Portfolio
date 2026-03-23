@@ -35,6 +35,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'vincentiwuno.kesug.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'v1.screenshot.11ty.dev',
+      },
+      {
+        protocol: 'https',
+        hostname: 'opengraph.githubassets.com',
+      },
     ],
   },
 };

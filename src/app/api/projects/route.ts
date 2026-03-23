@@ -22,12 +22,14 @@ export async function GET() {
   try {
     const githubToken = process.env.GITHUB_TOKEN;
     const githubUsername = process.env.GITHUB_USERNAME || 'Vlex127';
-    
+
     if (!githubToken) {
-      return NextResponse.json(
-        { error: 'GitHub token not configured' },
-        { status: 500 }
-      );
+      console.warn('GITHUB_TOKEN is missing. Returning mock data instead.');
+      return NextResponse.json(MOCK_PROJECTS, {
+        headers: {
+          'Cache-Control': 'no-store',
+        },
+      });
     }
 
     const response = await fetch(
@@ -66,10 +68,64 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching GitHub repositories:', error);
-    
+
     return NextResponse.json(
       { error: 'Failed to fetch projects' },
       { status: 500 }
     );
   }
 }
+
+const MOCK_PROJECTS: GitHubRepo[] = [
+  {
+    id: 1,
+    name: 'Portfolio-v4',
+    full_name: 'Vlex127/Portfolio',
+    description: 'A premium portfolio with live site previews, real-time analytics, and clean typography.',
+    html_url: 'https://github.com/Vlex127/Portfolio',
+    homepage: 'https://vincentiwuno.kesug.com',
+    stargazers_count: 12,
+    forks_count: 4,
+    language: 'TypeScript',
+    topics: ['nextjs', 'typescript', 'tailwindcss', 'framer-motion'],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    pushed_at: new Date().toISOString(),
+    fork: false,
+    private: false,
+  },
+  {
+    id: 2,
+    name: 'Smart-Chat-Engine',
+    full_name: 'Vlex127/Chat-Engine',
+    description: 'An AI-powered chat interface using RAG and vector databases for contextual conversations.',
+    html_url: 'https://github.com/Vlex127/Chat-Engine',
+    homepage: 'https://chat.vincentiwuno.kesug.com',
+    stargazers_count: 8,
+    forks_count: 2,
+    language: 'Python',
+    topics: ['ai', 'langchain', 'openai', 'fastapi'],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    pushed_at: new Date().toISOString(),
+    fork: false,
+    private: false,
+  },
+  {
+    id: 3,
+    name: 'Data-Visualizer',
+    full_name: 'Vlex127/Data-Viz',
+    description: 'Real-time dashboard for visualizing market trends with D3.js and WebSockets.',
+    html_url: 'https://github.com/Vlex127/Data-Viz',
+    homepage: null,
+    stargazers_count: 15,
+    forks_count: 5,
+    language: 'JavaScript',
+    topics: ['d3', 'visualisation', 'websockets', 'chartjs'],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    pushed_at: new Date().toISOString(),
+    fork: false,
+    private: false,
+  }
+];

@@ -5,17 +5,26 @@ import { motion } from 'motion/react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  Github, 
-  ExternalLink, 
-  Star, 
-  GitFork, 
+import {
+  Github,
+  ExternalLink,
+  Star,
+  GitFork,
   Calendar,
 
   AlertCircle,
   Search,
-  X
+  X,
+  Eye,
+  Globe
 } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
@@ -43,6 +52,33 @@ interface GitHubRepo {
   created_at: string;
   updated_at: string;
   pushed_at: string;
+}
+
+function ProjectThumbnail({ project, index }: { project: GitHubRepo; index: number }) {
+  const [imgSrc, setImgSrc] = useState(
+    project.homepage
+      ? `https://v1.screenshot.11ty.dev/${encodeURIComponent(project.homepage)}/large/`
+      : `https://opengraph.githubassets.com/1/${project.full_name}`
+  );
+  const [hasError, setHasError] = useState(false);
+
+  return (
+    <Image
+      src={imgSrc}
+      alt={project.name}
+      width={400}
+      height={200}
+      className="object-cover w-full h-full rounded-t-xl transition-transform duration-500 group-hover:scale-110"
+      priority={index < 4}
+      unoptimized
+      onError={() => {
+        if (!hasError) {
+          setImgSrc(`https://opengraph.githubassets.com/1/${project.full_name}`);
+          setHasError(true);
+        }
+      }}
+    />
+  );
 }
 
 export function ProjectsGrid() {
@@ -153,8 +189,8 @@ export function ProjectsGrid() {
           <AlertCircle className="h-12 w-12 text-destructive mx-auto" />
           <h3 className="text-lg font-semibold">Unable to load projects</h3>
           <p className="text-muted-foreground">{error}</p>
-          <Button 
-            onClick={() => window.location.reload()} 
+          <Button
+            onClick={() => window.location.reload()}
             variant="outline"
             className="mt-4"
           >
@@ -289,17 +325,83 @@ export function ProjectsGrid() {
           >
             <Card className="group h-full min-h-[420px] flex flex-col flex-1 overflow-hidden border-0 bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              {/* Always show preview image for all repos */}
-              <div className="relative h-32 w-full overflow-hidden mb-2">
-                <Image
-                  src={`https://opengraph.githubassets.com/1/${project.full_name}`}
-                  alt={project.name}
-                  width={400}
-                  height={128}
-                  className="object-cover w-full h-full rounded-t-xl"
-                  priority={index < 4}
-                  unoptimized
-                />
+              <div className="relative h-48 w-full overflow-hidden mb-2 group-hover:cursor-pointer">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <div className="relative h-full w-full">
+                      <ProjectThumbnail project={project} index={index} />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div className="flex items-center gap-2 text-white font-medium bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/30 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                          <Eye className="h-4 w-4" />
+                          Quick View
+                        </div>
+                      </div>
+                      {project.homepage && (
+                        <div className="absolute top-2 right-2 z-10">
+                          <Badge className="bg-emerald-500/90 text-white border-0 backdrop-blur-md flex items-center gap-1">
+                            <Globe className="h-3 w-3" />
+                            Live
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-4xl p-0 overflow-hidden border-0 bg-transparent shadow-none sm:max-w-4xl">
+                    <DialogHeader className="sr-only">
+                      <DialogTitle>{project.name} Preview</DialogTitle>
+                    </DialogHeader>
+                    <div className="relative w-full aspect-video bg-background rounded-xl overflow-hidden border shadow-2xl">
+                      <div className="absolute top-0 left-0 right-0 h-12 bg-muted/80 backdrop-blur-md border-b flex items-center px-4 justify-between z-10">
+                        <div className="flex items-center gap-2">
+                          <div className="flex gap-1.5">
+                            <div className="w-3 h-3 rounded-full bg-red-500/20" />
+                            <div className="w-3 h-3 rounded-full bg-amber-500/20" />
+                            <div className="w-3 h-3 rounded-full bg-emerald-500/20" />
+                          </div>
+                          <span className="text-sm font-medium ml-2 truncate max-w-[200px] sm:max-w-md">
+                            {project.homepage || project.full_name}
+                          </span>
+                        </div>
+                        {project.homepage && (
+                          <Button asChild size="sm" variant="outline" className="h-8 gap-2 bg-background/50">
+                            <Link href={project.homepage} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="h-3.5 w-3.5" />
+                              View Live Site
+                            </Link>
+                          </Button>
+                        )}
+                      </div>
+                      <div className="pt-12 h-full w-full overflow-hidden">
+                        {project.homepage ? (
+                          <iframe
+                            src={project.homepage}
+                            className="w-full h-full border-0 bg-white"
+                            title={`Preview of ${project.name}`}
+                            onError={(e) => {
+                              // If iframe fails (X-Frame-Options), we could show the screenshot instead
+                              // but we already show the screenshot in the grid.
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center space-y-4">
+                            <Image
+                              src={`https://opengraph.githubassets.com/1/${project.full_name}`}
+                              alt={project.name}
+                              width={800}
+                              height={400}
+                              className="rounded-lg shadow-lg max-w-full"
+                              unoptimized
+                            />
+                            <div className="space-y-2">
+                              <h3 className="text-xl font-bold">{project.name}</h3>
+                              <p className="text-muted-foreground max-w-lg">{project.description}</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
               <CardHeader className="relative space-y-4 flex-1">
                 <div className="flex items-start justify-between">
@@ -318,8 +420,9 @@ export function ProjectsGrid() {
                 </div>
                 {project.language && (
                   <div className="flex items-center gap-2">
-                    <div 
-                      className={`h-3 w-3 rounded-full bg-[${getLanguageColor(project.language)}]`}
+                    <div
+                      className="h-3 w-3 rounded-full"
+                      style={{ backgroundColor: getLanguageColor(project.language) }}
                     />
                     <span className="text-sm text-muted-foreground">{project.language}</span>
                   </div>
@@ -329,9 +432,9 @@ export function ProjectsGrid() {
                 {project.topics.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {project.topics.slice(0, 3).map((topic) => (
-                      <Badge 
-                        key={topic} 
-                        variant="secondary" 
+                      <Badge
+                        key={topic}
+                        variant="secondary"
                         className="text-xs bg-muted/50 hover:bg-muted/70 transition-colors"
                       >
                         {topic}
@@ -356,9 +459,9 @@ export function ProjectsGrid() {
                 </div>
                 <div className="flex items-center gap-3 pt-4">
                   <Button asChild size="sm" variant="outline" className="flex-1">
-                    <Link 
-                      href={project.html_url} 
-                      target="_blank" 
+                    <Link
+                      href={project.html_url}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2"
                     >
@@ -368,9 +471,9 @@ export function ProjectsGrid() {
                   </Button>
                   {project.homepage && (
                     <Button asChild size="sm" className="flex-1">
-                      <Link 
-                        href={project.homepage} 
-                        target="_blank" 
+                      <Link
+                        href={project.homepage}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center gap-2"
                       >
@@ -431,7 +534,7 @@ function formatDate(dateString: string): string {
   const date = new Date(dateString);
   const now = new Date();
   const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-  
+
   if (diffInDays === 0) return 'today';
   if (diffInDays === 1) return 'yesterday';
   if (diffInDays < 30) return `${diffInDays} days ago`;
@@ -459,6 +562,6 @@ function getLanguageColor(language: string): string {
     React: '#61DAFB',
     Svelte: '#ff3e00',
   };
-  
+
   return colors[language] || '#6b7280';
 }
