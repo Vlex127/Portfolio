@@ -22,6 +22,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
@@ -355,6 +356,9 @@ export function ProjectsGrid() {
                   <DialogContent className="max-w-4xl p-0 overflow-hidden border-0 bg-transparent shadow-none sm:max-w-4xl">
                     <DialogHeader className="sr-only">
                       <DialogTitle>{project.name} Preview</DialogTitle>
+                      <DialogDescription>
+                        Live preview and details for {project.name}.
+                      </DialogDescription>
                     </DialogHeader>
                     <div className="relative w-full aspect-video bg-background rounded-xl overflow-hidden border shadow-2xl">
                       <div className="absolute top-0 left-0 right-0 h-12 bg-muted/80 backdrop-blur-md border-b flex items-center px-4 justify-between z-10">

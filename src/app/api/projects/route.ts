@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 interface GitHubRepo {
   id: number;
   name: string;
@@ -22,6 +24,7 @@ export async function GET() {
   try {
     const githubToken = process.env.GITHUB_TOKEN;
     const githubUsername = process.env.GITHUB_USERNAME || 'Vlex127';
+    console.log('DEBUG: githubToken exists:', !!githubToken);
 
     if (!githubToken) {
       console.warn('GITHUB_TOKEN is missing. Returning mock data instead.');
@@ -33,7 +36,7 @@ export async function GET() {
     }
 
     const response = await fetch(
-      `https://api.github.com/user/repos?sort=updated&per_page=50&affiliation=owner`,
+      `https://api.github.com/user/repos?sort=updated&per_page=100&affiliation=owner,collaborator,organization_member&visibility=all`,
       {
         headers: {
           'Authorization': `token ${githubToken}`,
@@ -53,8 +56,8 @@ export async function GET() {
     const repos: GitHubRepo[] = await response.json();
     const filteredRepos = repos
       .filter((repo) => {
-        // Show public repos OR private repos that have a homepage (live preview)
-        return !repo.private || (repo.private && repo.homepage);
+        // Temporarily showing all for debugging
+        return true;
       })
       .sort((a, b) => {
         // Sort by combination of stars and recent updates
