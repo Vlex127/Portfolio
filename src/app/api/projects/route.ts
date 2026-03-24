@@ -24,7 +24,6 @@ export async function GET() {
   try {
     const githubToken = process.env.GITHUB_TOKEN;
     const githubUsername = process.env.GITHUB_USERNAME || 'Vlex127';
-    console.log('DEBUG: githubToken exists:', !!githubToken);
 
     if (!githubToken) {
       console.warn('GITHUB_TOKEN is missing. Returning mock data instead.');
@@ -56,8 +55,8 @@ export async function GET() {
     const repos: GitHubRepo[] = await response.json();
     const filteredRepos = repos
       .filter((repo) => {
-        // Temporarily showing all for debugging
-        return true;
+        // Show public repos OR private repos that have a homepage (live preview)
+        return !repo.private || (repo.private && repo.homepage);
       })
       .sort((a, b) => {
         // Sort by combination of stars and recent updates
