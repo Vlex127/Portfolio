@@ -1,5 +1,4 @@
 import { Navbar } from '@/components/sections/navbar';
-import { FooterSection } from '@/components/sections/footer';
 
 export default function SkillsLayout({
   children,
@@ -10,7 +9,6 @@ export default function SkillsLayout({
     <>
       <Navbar />
       {children}
-      <FooterSection />
     </>
   );
 }
